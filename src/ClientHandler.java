@@ -11,17 +11,15 @@ import java.io.DataOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class ClientHandler implements Runnable
 {
 	private Socket connectionSock = null;
 	private ArrayList<Socket> socketList;
-	private HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+    private List<String> clientList = new ArrayList<String>();
 
 	ClientHandler(Socket sock, ArrayList<Socket> socketList)
 	{
@@ -35,42 +33,21 @@ public class ClientHandler implements Runnable
 		try
 		{
 			System.out.println("Connection made with socket " + connectionSock);
-			String ipAddress = connectionSock.getInetAddress().getHostAddress();
-			Integer port = connectionSock.getPort();
-			hmap.put(ipAddress, port);
 			BufferedReader clientInput = new BufferedReader(
 				new InputStreamReader(connectionSock.getInputStream()));
-			Iterator it = hmap.entrySet().iterator();
-			if (!hmap.isEmpty()){
-		    	while (it.hasNext()) {
-		        	Map.Entry pair = (Map.Entry)it.next();
-		        	String socketinfo = "[IP:"+ pair.getKey() + "Port:" + pair.getValue()+"]";
-		        	System.out.println(socketinfo);
-						for (Socket s : socketList)
-						{
-							if (s != connectionSock)
-							{
-								DataOutputStream clientOutput = new DataOutputStream(s.getOutputStream());
-								clientOutput.writeBytes(socketinfo + "\n");
-							}
-						}
-		        	it.remove(); // avoids a ConcurrentModificationException
-    			}
-			}
-
+            DataOutputStream Output = new DataOutputStream(connectionSock.getOutputStream());
+            if (socketList.size() == 1) {
+                System.out.println("First to connect to server. ***1 sent.");
+                Output.writeBytes("***1" + "\n");
+                //Output.flush();
+            } else if (socketList.size() > 1) {
+                System.out.println("***2 sent.");
+                Output.writeBytes("***2" + "\n");
+            }
 			while (true)
 			{
 				// Get data sent from a client
 				String clientText = clientInput.readLine();
-				// if (clientText.startsWith("Conncetion made with socket"))
-				// {
-				// 	String ipAddress = connectionSock.getInetAddress().getHostAddress();
-				// 	Integer port = connectionSock.getPort();
-				// 	System.out.println("ip:" + ipAddress);
-				// 	System.out.println("port" + port);
-				// 	hmap.put(ipAddress, port);
-
-				// }
 				if (clientText != null)
 				{
 					System.out.println("Received: " + clientText);
