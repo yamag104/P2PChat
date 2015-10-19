@@ -21,6 +21,9 @@ import java.io.DataOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MTClient
@@ -38,7 +41,6 @@ public class MTClient
 			DataOutputStream serverOutput = new DataOutputStream(connectionSock.getOutputStream());
 
 			System.out.println("Connection made.");
-
 			// Start a thread to listen and display data sent by the server
 			ClientListener listener = new ClientListener(connectionSock);
 			Thread theThread = new Thread(listener);
@@ -60,4 +62,3 @@ public class MTClient
 		}
 	}
 } // MTClient
-
