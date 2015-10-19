@@ -19,8 +19,6 @@ public class ClientHandler implements Runnable
 {
 	private Socket connectionSock = null;
 	private ArrayList<Socket> socketList;
-    private List<String> clientList = new ArrayList<String>();
-
 	ClientHandler(Socket sock, ArrayList<Socket> socketList)
 	{
 		this.connectionSock = sock;
@@ -44,6 +42,17 @@ public class ClientHandler implements Runnable
                 System.out.println("***2 sent.");
                 Output.writeBytes("***2" + "\n");
             }
+
+            /* Printing out the connected clients */
+            for (Socket s : socketList)
+            {
+                if (s != connectionSock)
+                {
+                    Output.writeBytes(s + "\n");
+
+                }
+            }
+
 			while (true)
 			{
 				// Get data sent from a client
