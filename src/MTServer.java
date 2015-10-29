@@ -9,8 +9,7 @@
  * When a client connects, the MTServer starts a ClientHandler in a separate thread 
  * to receive messages from the client.
  *
- * To test, start the server first, then start multiple clients and type messages
- * in the client windows.
+ * @author Yoko Yamaguchi
  *
  */
 import java.net.ServerSocket;

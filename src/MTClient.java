@@ -15,6 +15,8 @@
  * a user is typing in information a message from the server will be
  * inserted.  
  *
+ * @author Yoko Yamaguchi
+ *
  */
 import java.net.Socket;
 import java.io.DataOutputStream;
@@ -50,8 +52,10 @@ public class MTClient
 			Scanner keyboard = new Scanner(System.in);
 			while (true)
 			{
-				String data = keyboard.nextLine();
-				serverOutput.writeBytes(data + "\n");
+				if (keyboard.hasNextLine()) {
+					String data = keyboard.nextLine();
+					serverOutput.writeBytes(data + "\n");
+				}
 			}
 		}
 		catch (IOException e)
